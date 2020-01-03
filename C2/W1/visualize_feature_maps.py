@@ -116,13 +116,17 @@ def plot_loss(history):
         history: `History` object, containing the training history of the model
     """
     loss = history.history['loss']
-    val_loss = history.history['val_loss']
+
+    # plotting the validation loss if a validation set exists
+    if 'val_loss' in history.history:
+        val_loss = history.history['val_loss']
+        plt.plot(val_loss, label='validation loss')
 
     plt.plot(loss, label='training loss')
-    plt.plot(val_loss, label='validation loss')
     plt.xlabel('Epochs')
     plt.ylabel('Loss')
     plt.legend()
+    plt.title('Model loss vs. training epochs')
     plt.show()
 
 
@@ -134,51 +138,57 @@ def plot_accuracy(history):
         history: `History` object, containing the training history of the model
     """
     acc = history.history['acc']
-    val_acc = history.history['val_acc']
+
+    # plotting the validation accuracy if there exists a validation set
+    if 'val_acc' in history.history:
+        val_acc = history.history['val_acc']
+        plt.plot(val_acc, label='validation accuracy')
 
     plt.plot(acc, label='training accuracy')
-    plt.plot(val_acc, label='validation accuracy')
     plt.xlabel('Epochs')
     plt.ylabel('Accuracy')
     plt.legend()
+    plt.title('Model accuracy vs. training epochs')
     plt.show()
 
 
 if __name__ == '__main__':
-    def model():
-        a = Input(shape=(150, 150, 3))
-        b = Conv2D(4, (3, 3), activation='relu')(a)
-        b = MaxPool2D()(b)
-        b = Conv2D(8, (3, 3), activation='relu')(b)
-        b = MaxPool2D()(b)
-        b = Flatten()(b)
-        b = Dense(1, activation='sigmoid')(b)
-        model = Model(inputs=a, outputs=b)
+    from C2.W1.cats_dogs import train_model
 
-        train_imagegen = ImageDataGenerator(rescale=1 / 255)
-        valid_imagegen = ImageDataGenerator(rescale=1 / 255)
+    # def model():
+    #     a = Input(shape=(150, 150, 3))
+    #     b = Conv2D(4, (3, 3), activation='relu')(a)
+    #     b = MaxPool2D()(b)
+    #     b = Conv2D(8, (3, 3), activation='relu')(b)
+    #     b = MaxPool2D()(b)
+    #     b = Flatten()(b)
+    #     b = Dense(1, activation='sigmoid')(b)
+    #     model = Model(inputs=a, outputs=b)
+    #
+    #     train_imagegen = ImageDataGenerator(rescale=1 / 255)
+    #     valid_imagegen = ImageDataGenerator(rescale=1 / 255)
+    #
+    #     train_generator = train_imagegen.flow_from_directory(path + '/train',
+    #                                                      target_size=(
+    #                                                      150, 150),
+    #                                                      batch_size=20,
+    #                                                      class_mode='binary')
+    #     valid_generator = valid_imagegen.flow_from_directory(path + '/validation',
+    #                                                     target_size=(150, 150),
+    #                                                     batch_size=20,
+    #                                                     class_mode='binary')
+    #
+    #     model.compile(optimizer='adam', loss='binary_crossentropy',
+    #                   metrics=['acc'])
+    #
+    #     history = model.fit(train_generator, steps_per_epoch=100, epochs=5,
+    #                         verbose=1, validation_steps=50,
+    #                         validation_data=valid_generator)
+    #
+    #     return model, history
 
-        train_generator = train_imagegen.flow_from_directory(path + '/train',
-                                                         target_size=(
-                                                         150, 150),
-                                                         batch_size=20,
-                                                         class_mode='binary')
-        valid_generator = valid_imagegen.flow_from_directory(path + '/validation',
-                                                        target_size=(150, 150),
-                                                        batch_size=20,
-                                                        class_mode='binary')
-
-        model.compile(optimizer='adam', loss='binary_crossentropy',
-                      metrics=['acc'])
-
-        history = model.fit(train_generator, steps_per_epoch=100, epochs=5,
-                            verbose=1, validation_steps=50,
-                            validation_data=valid_generator)
-
-        return model, history
-
-    path = '../../Data/cats-and-dogs/'
-    model, history = model()
+    path = '../../Data/cats-and-dogs_reduced/'
+    model, history = train_model()
 
     plot_feature_maps_from_random_img(model, path+'train/cats')
     plot_loss(history)
