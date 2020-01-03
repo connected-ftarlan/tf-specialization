@@ -3,9 +3,7 @@ import matplotlib.pyplot as plt
 import os
 import random
 from tensorflow.keras.preprocessing.image import img_to_array, load_img
-from tensorflow.keras.layers import Input, Conv2D, MaxPool2D, Flatten, Dense
 from tensorflow.keras.models import Model
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 
 def plot_feature_maps(model, img):
@@ -154,38 +152,6 @@ def plot_accuracy(history):
 
 if __name__ == '__main__':
     from C2.W1.cats_dogs import train_model
-
-    # def model():
-    #     a = Input(shape=(150, 150, 3))
-    #     b = Conv2D(4, (3, 3), activation='relu')(a)
-    #     b = MaxPool2D()(b)
-    #     b = Conv2D(8, (3, 3), activation='relu')(b)
-    #     b = MaxPool2D()(b)
-    #     b = Flatten()(b)
-    #     b = Dense(1, activation='sigmoid')(b)
-    #     model = Model(inputs=a, outputs=b)
-    #
-    #     train_imagegen = ImageDataGenerator(rescale=1 / 255)
-    #     valid_imagegen = ImageDataGenerator(rescale=1 / 255)
-    #
-    #     train_generator = train_imagegen.flow_from_directory(path + '/train',
-    #                                                      target_size=(
-    #                                                      150, 150),
-    #                                                      batch_size=20,
-    #                                                      class_mode='binary')
-    #     valid_generator = valid_imagegen.flow_from_directory(path + '/validation',
-    #                                                     target_size=(150, 150),
-    #                                                     batch_size=20,
-    #                                                     class_mode='binary')
-    #
-    #     model.compile(optimizer='adam', loss='binary_crossentropy',
-    #                   metrics=['acc'])
-    #
-    #     history = model.fit(train_generator, steps_per_epoch=100, epochs=5,
-    #                         verbose=1, validation_steps=50,
-    #                         validation_data=valid_generator)
-    #
-    #     return model, history
 
     path = '../../Data/cats-and-dogs_reduced/'
     model, history = train_model()

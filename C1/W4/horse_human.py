@@ -4,19 +4,7 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import EarlyStopping, Callback
 from tensorflow.keras.models import Model
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-
-
-class MyCallback(Callback):
-    def on_epoch_end(self, epoch, logs={}):
-        threshold = 0.99
-        if logs.get('val_acc') > threshold:
-            if epoch + 1 > 1:
-                print('\nTrained for {} epochs'.format(epoch+1))
-            else:
-                print('\nTrained for {} epoch'.format(epoch+1))
-            print('Achieved validation accuracy of >{}%'.format(threshold*100))
-            print('Stopping training...')
-            self.model.stop_training = True
+from C1.W3.MyCallback import MyCallback
 
 
 def load_data(train_path, valid_path):

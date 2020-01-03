@@ -1,21 +1,9 @@
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv2D, MaxPool2D, Flatten, Dense, \
     Dropout, BatchNormalization
-from tensorflow.keras.callbacks import EarlyStopping, Callback
+from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.datasets import fashion_mnist
-
-
-class MyCallback(Callback):
-    def on_epoch_end(self, epoch, logs={}):
-        threshold = 0.99
-        if logs.get('val_accuracy') > threshold:
-            if epoch + 1 > 1:
-                print('\nTrained for {} epochs'.format(epoch+1))
-            else:
-                print('\nTrained for {} epoch'.format(epoch+1))
-            print('Achieved validation accuracy of >{}%'.format(threshold*100))
-            print('Stopping training...')
-            self.model.stop_training = True
+from C1.W3.MyCallback import MyCallback
 
 
 def load_data():

@@ -3,7 +3,7 @@ from tensorflow.keras.layers import Input, Conv2D, MaxPool2D, Flatten, Dense,\
     Dropout
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import RMSprop
-from C2.W1.cats_dogs import MyCallback
+from C1.W3.MyCallback import MyCallback
 from tensorflow.keras.callbacks import EarlyStopping
 from C2.W1.visualize_feature_maps import plot_accuracy, plot_loss
 
