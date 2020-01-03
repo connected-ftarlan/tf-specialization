@@ -1,4 +1,4 @@
-## Data augmentation
+# Data augmentation
 Data augmentation is often used in computer vision problems to enlarge the dataset. The premise of data augmentation is that the new augmented data may introduce features to the training set that can help unocover features in the validation/test set that do not currently exist in - and hence cannot be learned from - the training set. 
 
 Data augmentation is effectively a method to reduce overfitting. 
