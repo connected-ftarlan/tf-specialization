@@ -1,0 +1,7 @@
+# virtual environment
+venv
+
+# folders
+*.DS_Store
+*.idea
+
