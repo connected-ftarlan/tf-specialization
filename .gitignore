@@ -9,3 +9,8 @@ __pycache__/
 # trial files
 trial.py
 
+# models
+inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5
+
+# datasets
+cats-dogs_full
