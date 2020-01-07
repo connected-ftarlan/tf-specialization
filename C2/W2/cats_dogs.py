@@ -175,7 +175,7 @@ def load_data(train_path, valid_path):
 
 def cat_dogs_model():
     """
-    Defines a convolutional neural network model to classify horses and humans
+    Defines a convolutional neural network model to classify cats and dogs
 
     Returns:
         `Model` object, containing the model
@@ -197,6 +197,18 @@ def cat_dogs_model():
 
 
 def compile_fit(model, train_generator, valid_generator):
+    """
+    Compiles and fits the model on the training set. Validates on the
+    validation set.
+
+    Args:
+        model: `Model` object, containing the model
+        train_generator: ImageDataGenerator, image generator for training data
+        valid_generator: ImageDataGenerator, image generator for validation data
+
+    Returns:
+        history: `History` object, containing the history of model training
+    """
     # compiling the model
     model.compile(loss='binary_crossentropy', optimizer=RMSprop(lr=1e-4),
                   metrics=['acc'])
@@ -207,7 +219,7 @@ def compile_fit(model, train_generator, valid_generator):
     mycall = MyCallback()
 
     # fitting the model to the training data. Validating on the validation set
-    history = model.fit_generator(train_generator, epochs=2, verbose=1,
+    history = model.fit_generator(train_generator, epochs=20, verbose=1,
                                   validation_data=valid_generator)
 
     return history

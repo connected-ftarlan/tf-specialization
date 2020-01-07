@@ -50,6 +50,13 @@ def load_data(train_dir, validation_dir):
 
 
 def horse_human_model():
+    """
+    Defines a model on the top of the Inception v3 network by adding a few
+    fully connected layers on the top of Inception.
+
+    Returns:
+        `Model` object, containing the model
+    """
     # loading the inception v3 model from the .h5 file
     inception_path = 'inception_v3_weights_tf_dim_ordering_tf_kernels_notop.h5'
     inception_model = InceptionV3(input_shape=(150, 150, 3),
@@ -72,6 +79,18 @@ def horse_human_model():
 
 
 def compile_fit(model, train_generator, valid_generator):
+    """
+    Compiles and fits the model on the training set. Validates on the
+    validation set.
+
+    Args:
+        model: `Model` object, containing the model
+        train_generator: ImageDataGenerator, image generator for training data
+        valid_generator: ImageDataGenerator, image generator for validation data
+
+    Returns:
+        history: `History` object, containing the history of model training
+    """
     # compiling the model
     model.compile(optimizer=Adam(lr=0.0001), loss='binary_crossentropy',
                   metrics=['acc'])

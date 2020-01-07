@@ -44,7 +44,7 @@ def load_data(train_path, valid_path):
 
 def cats_dogs_model():
     """
-    Defines a convolutional neural network model to classify horses and humans
+    Defines a convolutional neural network model to classify cats and dogs
 
     Returns:
         `Model` object, containing the model
