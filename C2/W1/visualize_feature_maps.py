@@ -151,7 +151,7 @@ def plot_accuracy(history):
 
 
 if __name__ == '__main__':
-    from C2.W1.cats_dogs import train_model
+    from C2.W1.cats_dogs_reduced import train_model
 
     path = '../../Data/cats-and-dogs_reduced/'
     model, history = train_model()

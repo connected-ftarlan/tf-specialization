@@ -85,7 +85,7 @@ def compile_fit(model, train_generator, valid_generator):
                   metrics=['accuracy'])
 
     # callbacks to stop training earlier than planned
-    early_stop = EarlyStopping(monitor='acc', min_delta=0.0001,
+    early_stop = EarlyStopping(monitor='accuracy', min_delta=0.0001,
                                patience=5, restore_best_weights=True)
 
     # fitting the model to the training data. Validating on the validation set
