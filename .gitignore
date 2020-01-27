@@ -4,6 +4,7 @@ venv
 # folders
 .DS_Store
 .idea
+.vscode
 __pycache__/
 
 # trial files
@@ -14,3 +15,6 @@ trial.py
 
 # datasets
 cats-dogs_full
+
+# passes
+github_token.txt

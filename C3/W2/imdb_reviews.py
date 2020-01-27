@@ -2,7 +2,7 @@ import numpy as np
 import tensorflow_datasets as tfds
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
-from tensorflow.keras.layers import Input, Embedding, Flatten, Dense
+from tensorflow.keras.layers import Input, Embedding, GlobalAveragePooling1D,Dense
 from tensorflow.keras.models import Model
 
 
@@ -52,14 +52,15 @@ def prepare_train_data(train_sentences, vocab_size, max_length):
     padded and tokenized sequence of each string based on the entire corpus
 
     Args:
-        train_sentences: [str]. List of strings, where each string is an imdb review
+        train_sentences: [str]. List of strings. Each string is an imdb review
         vocab_size: int. Max number of words to create the tokenizer with
         max_length: int. Max length of a sentence
 
     Returns:
         tokenizer: instance of the tokenizer trained on the training data
-        padded: np.array of shape (num_sentences, max_length). Tokenized and
-        padded sequence of training sentences
+        padded: np.array of shape (num_sentences, max_length). Each
+        row is a training example represented in the form of a
+        sequence of numbers padded to `max_length`
     """
     tokenizer = Tokenizer(num_words=vocab_size, oov_token='<OOV>')
     tokenizer.fit_on_texts(train_sentences)
@@ -106,9 +107,22 @@ def word_indices(tokenizer):
 
 
 def imdb_model(max_length, vocab_size, emd_dim):
+    """
+    Defines a ML model to classify imdb movie reviews into positive and
+    negative classes.
+
+    Args:
+        max_length: int. Shape of the input vector
+        vocab_size: int. Number of words in the vocabulary
+        emd_dim: int. Number of dimensions to encode each word with
+
+    Returns:
+        `Model` object, containing the model
+    """
     visible = Input(shape=max_length)
     x = Embedding(vocab_size, emd_dim)(visible)
-    x = Flatten()(x)
+    x = GlobalAveragePooling1D()(x)
+    # x = Flatten()(x)  # can alternatively use Flatten() instead of pool
     x = Dense(6, activation='relu')(x)
     x = Dense(1, activation='sigmoid')(x)
     return Model(inputs=visible, outputs=x)
