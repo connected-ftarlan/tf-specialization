@@ -15,6 +15,7 @@ trial.py
 
 # datasets
 cats-dogs_full
+sentiment140.csv
 
 # passes
 github_token.txt

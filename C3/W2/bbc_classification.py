@@ -17,7 +17,7 @@ def read_data(filename):
 
     Returns:
         sentences: [str], where each entry is a string
-        labels: [str], where each entry is a label to the corresponding
+        labels: [str], where each entry is a label of the corresponding
         sentence in the `sentences` list
     """
     sentences, labels = [], []
@@ -87,7 +87,7 @@ def __remove_stop_words(sentence, stop_word_dic):
 
     Args:
         sentence: str. A sentence in the form of a string
-        stop_word_dic: {str:int}. Dictionary mapping stop words to an integer
+        stop_word_dic: {str:int}. A dictionary containing stop words
 
     Returns:
         str. The input sentence with its stop words removed
@@ -141,7 +141,7 @@ def tokenize_labels(train_labels, valid_labels):
     """
     Given a list of labels for the training set and one for the validation
     set, it returns one corresponding np array, one for training and one for
-    validation sets, where each label is tokenized into an integer
+    validation sets, where each label is tokenized into an integer.
 
     Args:
         train_labels: [str], where each entry is label corresponding to a
@@ -161,10 +161,8 @@ def tokenize_labels(train_labels, valid_labels):
     tokenizer = Tokenizer()
     tokenizer.fit_on_texts(train_labels)
 
-    # tokenizing the training labels
+    # tokenizing the training and validation labels
     train_labels_seq = tokenizer.texts_to_sequences(train_labels)
-
-    # tokenizing the validation labels
     valid_labels_seq = tokenizer.texts_to_sequences(valid_labels)
 
     return np.array(train_labels_seq), np.array(valid_labels_seq)
