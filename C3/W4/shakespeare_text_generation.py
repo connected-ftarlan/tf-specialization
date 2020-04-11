@@ -1,70 +1,64 @@
-import numpy as np
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
+import tensorflow.keras as k
 
-from tensorflow.keras.layers import Embedding, LSTM, Dense, Dropout, Bidirectional
+from tensorflow.keras.layers import Embedding, LSTM, Dense, Dropout
 from tensorflow.keras.models import Sequential
+from tensorflow.keras.regularizers import l2
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.regularizers import l2
 
 
 def load_data(filename):
-    """
-    Given the path to a text file containing the dataset, it returns a list
-    of strings.
-
-    Args:
-        filename: str. Path to the text file containing the data
-
-    Returns:
-        - [str]. List of strings of the data
-    """
     try:
         with open(filename) as f:
             data = f.read().lower().split('\n')
     except FileNotFoundError as e:
         print(e)
         pass
-
     return data
 
 
 def create_dataset(data):
-    """
-    Creates a dataset from the list of strings passed in, where each data
-    points is constructed by slicing each sentence to various degrees. The
-    label of each data point is the next word that appears in the sentence.
-
-    Args:
-        data: [str]. List of strings containing the data
-
-    Returns:
-
-    """
-    tokneizer = Tokenizer()
-    tokneizer.fit_on_texts(data)
-    data_sequence = tokneizer.texts_to_sequences(data)
+    tokenizer = Tokenizer()
+    tokenizer.fit_on_texts(data)
+    data_sequence = tokenizer.texts_to_sequences(data)
     x, y = [], []
-    max_length = max([len(line) for line in data_sequence])
-    print(data_sequence)
-    print(len(data_sequence))
-    print(len(data))
-
-    return np.array(x), np.array(y)
-
-
-def shakespeare_model():
-    pass
+    for sequence in data_sequence:
+        for i in range(1, len(sequence)):
+            x.append(sequence[:i])
+            y.append(sequence[i])
+    return tokenizer, pad_sequences(x), k.utils.to_categorical(y)
 
 
-def compile_fit():
-    pass
+def shakespeare_model(vocab_size, embedding_dim, max_sequence_length):
+    model = Sequential()
+    model.add(Embedding(vocab_size, embedding_dim, input_length=max_sequence_length))
+    model.add(LSTM(150, return_sequences=True))
+    model.add(Dropout(0.5))
+    model.add(LSTM(100))
+    model.add(Dense(vocab_size//2, activation='relu', kernel_regularizer=l2()))
+    model.add(Dense(vocab_size, activation='softmax'))
+    return model
+
+
+def compile_fit(model, x, y, epochs):
+    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+    history = model.fit(x, y, epochs=epochs, verbose=1)
+    return history
+
+
+def train():
+    filepath = '../../Data/shakespeare_sonnets.txt'
+    data = load_data(filepath)
+    tokenizer, x, y = create_dataset(data)
+    vocab_size = len(tokenizer.word_index) + 1
+    sequence_lenth = len(x[0, :])
+    embedding_dim = 100
+    epochs = 100
+    model = shakespeare_model(vocab_size, embedding_dim, sequence_lenth)
+    history = compile_fit(model, x, y, epochs)
 
 
 if __name__ == '__main__':
-    filepath = '../../Data/shakespeare_sonnets.txt'
-    data = load_data(filepath)
-    x, y = create_dataset(data)
-    print(len(data))
-    print(x.shape)
-    print(y.shape)
+    train()
