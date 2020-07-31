@@ -18,4 +18,4 @@ You can install all the dependencies using the `requirements.txt` file provided.
 - scipy
 
 The exact versions of each of these libraries is included in the `requirements.txt` file. 
-To install the dependencies, create and activate a virtual environment, then run `pip install -r requirements.txt`. 
+To install the dependencies, create and activate a virtual environment; then run `pip install -r requirements.txt`. 
